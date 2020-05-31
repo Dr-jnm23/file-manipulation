@@ -1,0 +1,18 @@
+# first source file
+with open ('first.txt', 'r') as file:
+    data = file.readlines()
+    data[-1] += '\n'                # data from next file on new line
+
+# next source file(s)
+
+for filename in ['second.txt', 'third.txt']:
+    with open(filename, 'r') as file:
+        file.readline()             # skip header row
+        data += file.readlines()
+        data[-1] += '\n'            # data from next file  on new line
+
+# create target file as merged
+
+with open('all.txt', 'w') as merged:
+    for line in data:
+        merged.write(line)
