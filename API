@@ -1,0 +1,126 @@
+
+
+# -*- coding: utf-8 -*-
+
+"""
+
+Created on Sun May 21 14:21:19 2023
+
+ 
+
+@author: Jamie Martin
+
+"""
+
+import requests
+import json
+import pandas as pd
+
+
+#return the data
+
+
+h = requests.get("https://fantasy.premierleague.com/api/entry/48193/history/")
+s = requests.get("https://fantasy.premierleague.com/api/bootstrap-static/")
+
+ 
+#doesn't give keys
+
+f = requests.get("https://fantasy.premierleague.com/api/fixtures/")
+
+
+#check the API is working
+
+print(h)
+print(s)
+print(f)
+
+ 
+
+#parse the json
+
+ 
+
+json1 = h.json()
+json2 = s.json()
+
+ 
+
+#print(json3)
+
+
+###find the keys
+
+
+keys1 = json1.keys()
+print(keys1)
+
+
+keys2 = json2.keys()
+print(keys2)
+
+
+
+##no keys for 3
+
+#keys3 = json3.keys()
+
+#print(keys3)
+
+
+###load into data frame
+
+
+current = pd.DataFrame(json1['current'])
+
+print(current)
+
+
+past = pd.DataFrame(json1['past'])
+
+print(past)
+
+
+chips = pd.DataFrame(json1['chips'])
+print(chips)
+
+
+events = pd.DataFrame(json2['events'])
+print(events)
+
+ 
+
+### extract into Excel separate
+
+ 
+
+#current.to_excel("current.xlsx")
+
+#past.to_excel("past.xlsx")
+
+#chips.to_excel("chips.xlsx")
+
+#events.to_excel("events.xlsx")
+
+ 
+
+### all in one workbook
+
+ 
+
+with pd.ExcelWriter('FPL.xlsx') as writer:
+
+    current.to_excel(writer, sheet_name='current')
+
+    past.to_excel(writer, sheet_name='past')
+
+    chips.to_excel(writer, sheet_name='chips')
+
+    events.to_excel(writer, sheet_name='events')
+
+ 
+
+ 
+
+
+ 
